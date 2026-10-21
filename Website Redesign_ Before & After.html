@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Website Redesign: Before &amp; After</title>
+<style>
+:root{--bg:#f7f6f3;--surface:#fff;--text:#1c1c1a;--muted:#6b6a64;--line:#e2e0d9;--accent:#1f5eff;--old:#b4532a;--new:#1f5eff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141413;--surface:#1e1e1c;--text:#f0eee8;--muted:#a09e96;--line:#34332f;--accent:#6f98ff;--old:#e08a5f;--new:#6f98ff}}
+:root[data-theme="dark"]{--bg:#141413;--surface:#1e1e1c;--text:#f0eee8;--muted:#a09e96;--line:#34332f;--accent:#6f98ff;--old:#e08a5f;--new:#6f98ff}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:1000px;margin:0 auto;padding:40px 20px 64px}
+h1{font-size:clamp(28px,5vw,44px);line-height:1.1;margin:0 0 10px;letter-spacing:-.02em}
+.sub{color:var(--muted);margin:0 0 28px;max-width:60ch}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:32px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.stat b{display:block;font-size:28px;letter-spacing:-.02em}
+.stat span{color:var(--muted);font-size:14px}
+.bar{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:center;margin-bottom:14px}
+.tabs,.modes{display:flex;gap:6px;flex-wrap:wrap}
+button{font:inherit;cursor:pointer;border:1px solid var(--line);background:var(--surface);color:var(--text);padding:7px 14px;border-radius:999px}
+button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.cmp{position:relative;aspect-ratio:16/10;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:var(--surface);user-select:none;touch-action:pan-y}
+.layer{position:absolute;inset:0}
+.layer img,.ph{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
+.ph{display:flex;align-items:center;justify-content:center;text-align:center;padding:20px;font-weight:600;color:var(--muted);background:repeating-linear-gradient(45deg,var(--surface),var(--surface) 14px,var(--bg) 14px,var(--bg) 28px)}
+.tag{position:absolute;top:12px;padding:4px 12px;border-radius:999px;font-size:13px;font-weight:700;color:#fff;z-index:3}
+.tag.b{left:12px;background:var(--old)}.tag.a{right:12px;background:var(--new)}
+#before{clip-path:inset(0 50% 0 0)}
+.handle{position:absolute;top:0;bottom:0;left:50%;width:3px;margin-left:-1.5px;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.25);z-index:2;pointer-events:none}
+.handle::after{content:"\2194";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:40px;height:40px;border-radius:50%;background:#fff;color:#222;display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 2px 8px rgba(0,0,0,.35)}
+.range{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;z-index:4;margin:0}
+.side{display:none;grid-template-columns:1fr 1fr;gap:12px}
+.side figure{margin:0}.side .cmp{aspect-ratio:16/12}
+.side figcaption{font-weight:700;margin-bottom:6px}
+.sidemode .cmp.main{display:none}.sidemode .side{display:grid}
+@media(max-width:640px){.side{grid-template-columns:1fr}}
+.note{color:var(--muted);font-size:14px;margin:14px 0 0}
+.load{margin-top:14px;display:flex;gap:16px;flex-wrap:wrap;font-size:14px;color:var(--muted)}
+.load label{display:flex;gap:8px;align-items:center}
+.cap{margin:18px 0 0;padding:14px 16px;background:var(--surface);border:1px solid var(--line);border-radius:12px}
+.cap h3{margin:0 0 4px;font-size:16px}.cap p{margin:0;color:var(--muted)}
+</style>
+</head>
+<body>
+<main>
+<h1>Website Redesign: Before &amp; After</h1>
+<p class="sub">A complete overhaul of South Piedmont Community College’s website, from design and structure to sitemap and user experience. Drag the slider to compare the old site with the new one.</p>
+
+<div class="stats">
+<div class="stat"><b>200</b><span>new pages built from scratch</span></div>
+<div class="stat"><b>800</b><span>outdated URLs archived</span></div>
+<div class="stat"><b>70+</b><span>bugs found and fixed</span></div>
+</div>
+
+<div class="bar">
+<div class="tabs" id="tabs" role="tablist"></div>
+<div class="modes">
+<button id="m1" aria-pressed="true">Slider</button>
+<button id="m2" aria-pressed="false">Side by side</button>
+</div>
+</div>
+
+<div id="wrap">
+<div class="cmp main" id="cmp">
+<div class="layer" id="after"></div>
+<div class="layer" id="before"></div>
+<span class="tag b">BEFORE</span><span class="tag a">AFTER</span>
+<div class="handle" id="handle"></div>
+<input class="range" id="range" type="range" min="0" max="100" value="50" aria-label="Compare before and after">
+</div>
+<div class="side">
+<figure><figcaption style="color:var(--old)">Before</figcaption><div class="cmp" id="sb"></div></figure>
+<figure><figcaption style="color:var(--new)">After</figcaption><div class="cmp" id="sa"></div></figure>
+</div>
+</div>
+
+<div class="cap"><h3 id="ct"></h3><p id="cp"></p></div>
+
+<div class="load">
+<span>Preview your own screenshots (only on your device):</span>
+<label>Before <input type="file" accept="image/*" id="fb"></label>
+<label>After <input type="file" accept="image/*" id="fa"></label>
+</div>
+</main>
+<script>
+var pairs=[
+{n:"Homepage",t:"A cleaner, more focused homepage",d:"Describe what changed here: layout, navigation, calls to action.",b:null,a:null},
+{n:"Program page",t:"Standardized degree pages",d:"Every degree page now follows one consistent template.",b:null,a:null},
+{n:"Navigation",t:"Simplified menus and sitemap",d:"Describe how the new menu and structure make things easier to find.",b:null,a:null}
+];
+var cur=0;
+var $=function(i){return document.getElementById(i)};
+function mk(src,label){
+  if(src){var i=document.createElement("img");i.src=src;i.alt=label;return i}
+  var d=document.createElement("div");d.className="ph";d.textContent=label+" screenshot goes here";return d;
+}
+function fill(id,src,label){var e=$(id);e.innerHTML="";e.appendChild(mk(src,label))}
+function render(){
+  var p=pairs[cur];
+  fill("before",p.b,"Old website");fill("after",p.a,"New website");
+  fill("sb",p.b,"Old website");fill("sa",p.a,"New website");
+  $("ct").textContent=p.t;$("cp").textContent=p.d;
+  var tabs=$("tabs");tabs.innerHTML="";
+  pairs.forEach(function(x,i){
+    var b=document.createElement("button");b.textContent=x.n;b.setAttribute("aria-pressed",i===cur);
+    b.onclick=function(){cur=i;render()};tabs.appendChild(b);
+  });
+}
+function pos(){
+  var v=$("range").value;
+  $("before").style.clipPath="inset(0 "+(100-v)+"% 0 0)";
+  $("handle").style.left=v+"%";
+}
+$("range").addEventListener("input",pos);
+function mode(side){
+  $("wrap").className=side?"sidemode":"";
+  $("m1").setAttribute("aria-pressed",!side);$("m2").setAttribute("aria-pressed",side);
+}
+$("m1").onclick=function(){mode(false)};$("m2").onclick=function(){mode(true)};
+function load(inp,key){
+  $(inp).addEventListener("change",function(e){
+    var f=e.target.files[0];if(!f)return;
+    var r=new FileReader();r.onload=function(){pairs[cur][key]=r.result;render()};r.readAsDataURL(f);
+  });
+}
+load("fb","b");load("fa","a");
+render();pos();
+</script>
+</body>
+</html>
